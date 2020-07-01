@@ -22,8 +22,4 @@ public class PhotoData {
     public List<Photos> getPhoto() {
         return photo;
     }
-
-    public void setPhoto(List<Photos> photo) {
-        this.photo = photo;
-    }
 }

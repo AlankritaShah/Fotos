@@ -54,7 +54,8 @@ public class PhotoDataSource extends PageKeyedDataSource<Long, Photos> {
             @Override
             public void onResponse(Call<PhotoResponse> call, Response<PhotoResponse> response) {
                 PhotoResponse photoResponse = response.body();
-                callback.onResult(photoResponse.getPhotos().getPhoto(), params.key+1);
+                if(photoResponse.getPhotos() != null)
+                    callback.onResult(photoResponse.getPhotos().getPhoto(), params.key+1);
             }
 
             @Override

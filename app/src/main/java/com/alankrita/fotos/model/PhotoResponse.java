@@ -10,8 +10,4 @@ public class PhotoResponse {
     public PhotoData getPhotos() {
         return photos;
     }
-
-    public void setPhotos(PhotoData photos) {
-        this.photos = photos;
-    }
 }

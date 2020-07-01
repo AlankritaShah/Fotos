@@ -11,6 +11,7 @@ import androidx.lifecycle.Transformations;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import com.alankrita.fotos.Config;
 import com.alankrita.fotos.datasource.PhotoDataSource;
 import com.alankrita.fotos.datasource.PhotoDataSourceFactory;
 import com.alankrita.fotos.model.Photos;
@@ -32,7 +33,7 @@ public class PhotoViewModel extends AndroidViewModel {
         PagedList.Config config = (new PagedList.Config.Builder())
                 .setEnablePlaceholders(true)
                 .setInitialLoadSizeHint(10)
-                .setPageSize(20)
+                .setPageSize(2* Config.PAGE_SIZE)
                 .setPrefetchDistance(4)
                 .build();
         executor = Executors.newFixedThreadPool(5);
