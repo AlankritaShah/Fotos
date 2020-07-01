@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
@@ -18,14 +19,13 @@ import java.util.concurrent.Executors;
 
 public class PhotoViewModel extends AndroidViewModel {
     private PhotoDataSourceFactory photoDataSourceFactory;
-    //private MutableLiveData<PhotoDataSource> dataSourcePhotoLiveData;
+    private MutableLiveData<PhotoDataSource> dataSourcePhotoLiveData;
     private Executor executor;
     private LiveData<PagedList<Photos>> pagedListPhotoLiveData;
+    public MutableLiveData<String> filterTextAll = new MutableLiveData<>();
 
     public PhotoViewModel(@NonNull Application application) {
         super(application);
-        photoDataSourceFactory = new PhotoDataSourceFactory();
-        //dataSourcePhotoLiveData = photoDataSourceFactory.getPhotoLiveData();
 
         PagedList.Config config = (new PagedList.Config.Builder())
                 .setEnablePlaceholders(true)
@@ -34,9 +34,14 @@ public class PhotoViewModel extends AndroidViewModel {
                 .setPrefetchDistance(4)
                 .build();
         executor = Executors.newFixedThreadPool(5);
-        pagedListPhotoLiveData = (new LivePagedListBuilder<Long,Photos>(photoDataSourceFactory,config))
-                .setFetchExecutor(executor)
-                .build();
+
+        pagedListPhotoLiveData = Transformations.switchMap(filterTextAll, input -> {
+            photoDataSourceFactory = new PhotoDataSourceFactory(input);
+            dataSourcePhotoLiveData = photoDataSourceFactory.getPhotoLiveData();
+            return (new LivePagedListBuilder(photoDataSourceFactory, config))
+                    .setFetchExecutor(executor)
+                    .build();
+        });
     }
 
     public LiveData<PagedList<Photos>> getPagedListLiveData() {

@@ -8,15 +8,17 @@ public class PhotoDataSourceFactory extends DataSource.Factory {
 
     private PhotoDataSource photoDataSource;
     private MutableLiveData<PhotoDataSource> photoLiveData;
+    private String searchKey;
 
-    public PhotoDataSourceFactory() {
+    public PhotoDataSourceFactory(String searchKey) {
+        this.searchKey = searchKey;
         photoLiveData = new MutableLiveData<>();
     }
 
     @NonNull
     @Override
     public DataSource create() {
-        photoDataSource = new PhotoDataSource();
+        photoDataSource = new PhotoDataSource(searchKey);
         photoLiveData.postValue(photoDataSource);
         return photoDataSource;
     }

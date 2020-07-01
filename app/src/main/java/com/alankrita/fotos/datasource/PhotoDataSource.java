@@ -14,18 +14,24 @@ public class PhotoDataSource extends PageKeyedDataSource<Long, Photos> {
 
     private ApiService apiService;
     private String TAG = PhotoDataSource.class.getSimpleName();
+    private String searchKey;
+
+    public PhotoDataSource(String searchKey) {
+        this.searchKey = searchKey;
+    }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, Photos> callback) {
 
         apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
-        Call<PhotoResponse> photoData = apiService.fetchPhotos(1);
+        Call<PhotoResponse> photoData = apiService.fetchPhotos(1, searchKey);
         photoData.enqueue(new Callback<PhotoResponse>() {
             @Override
             public void onResponse(Call<PhotoResponse> call, Response<PhotoResponse> response) {
                 PhotoResponse photoResponse = response.body();
                 //Log.i(TAG, "loadInitial photoSearch= " + photoSearch.getPhotos().getPage() + " " + photoSearch.getPhotos().getPhoto().get(0).getId());
-                callback.onResult(photoResponse.getPhotos().getPhoto(),null,(long)2);
+                if(photoResponse.getPhotos() != null)
+                    callback.onResult(photoResponse.getPhotos().getPhoto(),null,(long)2);
             }
 
             @Override
@@ -43,7 +49,7 @@ public class PhotoDataSource extends PageKeyedDataSource<Long, Photos> {
     @Override
     public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, Photos> callback) {
         apiService = RetrofitInstance.getRetrofitInstance().create(ApiService.class);
-        Call<PhotoResponse> photoData = apiService.fetchPhotos(params.key);
+        Call<PhotoResponse> photoData = apiService.fetchPhotos(params.key, searchKey);
         photoData.enqueue(new Callback<PhotoResponse>() {
             @Override
             public void onResponse(Call<PhotoResponse> call, Response<PhotoResponse> response) {
