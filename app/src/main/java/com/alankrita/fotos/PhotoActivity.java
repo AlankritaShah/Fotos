@@ -65,7 +65,7 @@ public class PhotoActivity extends AppCompatActivity {
     private void performSearch(String searchKey) {
         if(searchKey.isEmpty()){
             resultsTV.setVisibility(View.VISIBLE);
-            searchKey = "Dunzo";
+            searchKey = "okay";
         }
         else{
             resultsTV.setVisibility(View.GONE);

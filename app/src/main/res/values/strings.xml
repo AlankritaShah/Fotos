@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Fotos</string>
-    <string name="defaultText">Nothing to search\nShowing results for Dunzo</string>
+    <string name="defaultText">Nothing to search\nShowing random results</string>
 </resources>
