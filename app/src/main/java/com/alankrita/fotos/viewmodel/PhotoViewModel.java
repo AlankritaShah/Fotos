@@ -1,6 +1,7 @@
 package com.alankrita.fotos.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -23,6 +24,7 @@ public class PhotoViewModel extends AndroidViewModel {
     private Executor executor;
     private LiveData<PagedList<Photos>> pagedListPhotoLiveData;
     public MutableLiveData<String> filterTextAll = new MutableLiveData<>();
+    private String TAG = PhotoViewModel.class.getSimpleName();
 
     public PhotoViewModel(@NonNull Application application) {
         super(application);
@@ -36,6 +38,7 @@ public class PhotoViewModel extends AndroidViewModel {
         executor = Executors.newFixedThreadPool(5);
 
         pagedListPhotoLiveData = Transformations.switchMap(filterTextAll, input -> {
+            Log.i(TAG, "input " + input);
             photoDataSourceFactory = new PhotoDataSourceFactory(input);
             dataSourcePhotoLiveData = photoDataSourceFactory.getPhotoLiveData();
             return (new LivePagedListBuilder(photoDataSourceFactory, config))

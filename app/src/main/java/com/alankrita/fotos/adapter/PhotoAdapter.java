@@ -1,5 +1,6 @@
 package com.alankrita.fotos.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.alankrita.fotos.R;
 import com.alankrita.fotos.model.Photos;
@@ -16,7 +18,7 @@ public class PhotoAdapter extends PagedListAdapter<Photos, PhotoAdapter.PhotoVH>
     private String TAG = PhotoAdapter.class.getSimpleName();
     private final RequestManager glide;
     public PhotoAdapter(RequestManager glide) {
-        super(Photos.PHOTOS_DIFF_CALLBACK);
+        super(PHOTOS_DIFF_CALLBACK);
         this.glide = glide;
     }
 
@@ -45,4 +47,17 @@ public class PhotoAdapter extends PagedListAdapter<Photos, PhotoAdapter.PhotoVH>
             titleTV = itemView.findViewById(R.id.titleTV);
         }
     }
+
+    private static final DiffUtil.ItemCallback<Photos> PHOTOS_DIFF_CALLBACK = new DiffUtil.ItemCallback<Photos>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Photos photos, @NonNull Photos t1) {
+            Log.i("DiffUtil", "areItemsTheSame " + photos.getId().equals(t1.getId()));
+            return photos.getId().equals(t1.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Photos photos, @NonNull Photos t1) {
+            return true;
+        }
+    };
 }

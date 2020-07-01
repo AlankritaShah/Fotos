@@ -1,5 +1,7 @@
 package com.alankrita.fotos.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
@@ -23,15 +25,7 @@ public class Photos {
         return "https://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_m.jpg";
     }
 
-    public static final DiffUtil.ItemCallback<Photos> PHOTOS_DIFF_CALLBACK = new DiffUtil.ItemCallback<Photos>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull Photos photos, @NonNull Photos t1) {
-            return photos.id.equals(t1.id);
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Photos photos, @NonNull Photos t1) {
-            return true;
-        }
-    };
+    public String getId() {
+        return id;
+    }
 }
