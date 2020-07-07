@@ -53,10 +53,10 @@ public class PhotoActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         photoRV.setLayoutManager(llm);
         photoAdapter = new PhotoAdapter(Glide.with(this));
+        photoRV.setAdapter(photoAdapter);
 
         photoViewModel.getPagedListLiveData().observe(this, photos -> {
             photoAdapter.submitList(photos);
-            photoRV.setAdapter(photoAdapter);
         });
 
         performSearch("");
